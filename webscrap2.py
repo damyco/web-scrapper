@@ -104,6 +104,7 @@ for part_no in rawlist:
 # close chrome driver
 driver.close()
 
+
 # generate results and save as products.csv 
 data_file = pd.DataFrame({'id': part_numbers, 'title': titles, 'description': descriptions, 'price': prices,
                          'shipping weight': shipping_weights, 'image_link': image_links, 'link': product_links, 'canonical_link': canonical_links, 'brand': brand, 'condition': condition, 'availability': availability, 'identifier_exists': identifier_exists, 'google_product_category': product_category })
