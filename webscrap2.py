@@ -22,23 +22,23 @@ product_category = []
 
 
 # part list - read from CSV file
-parts_to_scrap = pd.read_csv('C:/code/web-scrapper/tribotape.csv')
+parts_to_scrap = pd.read_csv('C:/code/web-scrapper/triflex_uk_de.csv')
 parts_to_scrap.columns = ["part"]
 rawlist = list(parts_to_scrap.part)
 
 # start chrome driver
 driver = webdriver.Chrome(
     executable_path=r'C:\code\web-scrapper\chromedriver.exe')
-    
 
 for part_no in rawlist:
     # grab current part and add it to URL
     url = "https://www.igus.co.uk/product/?artNr=" + str(part_no)
     driver.get(url)
+     # wait
+    sleep(3)
     soup = BeautifulSoup(driver.page_source, "lxml")
 
-    # wait
-    sleep(3)
+   
 
     # get data from each element
 
@@ -72,6 +72,8 @@ for part_no in rawlist:
         canon_link = url
 
         # append data to arrays
+
+
         part_numbers.append(part_number)
         titles.append(title)
         
@@ -85,8 +87,9 @@ for part_no in rawlist:
         availability.append('in stock')
         identifier_exists.append('no')
         product_category.append('Business & Industrial > Manufacturing')
-
+        print("OK!" + part_number)
     except AttributeError:
+
         part_numbers.append('ERROR')
         titles.append('ERROR')
         descriptions.append('ERROR')
@@ -100,12 +103,15 @@ for part_no in rawlist:
         availability.append('in stock')
         identifier_exists.append('no')
         product_category.append('Business & Industrial > Manufacturing')
-
+        print("error! :(" + part_number)
 # close chrome driver
 driver.close()
+
 
 
 # generate results and save as products.csv 
 data_file = pd.DataFrame({'id': part_numbers, 'title': titles, 'description': descriptions, 'price': prices,
                          'shipping weight': shipping_weights, 'image_link': image_links, 'link': product_links, 'canonical_link': canonical_links, 'brand': brand, 'condition': condition, 'availability': availability, 'identifier_exists': identifier_exists, 'google_product_category': product_category })
-data_file.to_csv('C:/code/web-scrapper/tribotape_DONE.csv', index=False, encoding='utf-8')
+data_file.to_csv('C:/code/web-scrapper/triflex_uk_de_DONE.csv', index=False, encoding='utf-8')
+
+
